@@ -301,13 +301,16 @@ describe("Task", function () {
                 nodesRoute: '{{ api.nodes }}',
                 testConfigValue: 'test: {{ server.testConfigValue }}'
             };
-            return Task.create(definition, {}, {})
+            var context = {
+                target: 'testtarget'
+            };
+            return Task.create(definition, {}, context)
             .then(function(task) {
                 return task.run().then(function() {
                     expect(task.options.server).to.equal(server);
                     expect(task.options.fileServer).to.equal(fileServerUri);
                     expect(task.options.baseRoute).to.equal(server + '/api/current');
-                    expect(task.options.templatesRoute).to.equal(server + '/api/current/templates');
+                    expect(task.options.templatesRoute).to.equal(server + '/api/current/nodes/testtarget/templates');
                     expect(task.options.profilesRoute).to.equal(server + '/api/current/profiles');
                     expect(task.options.lookupsRoute).to.equal(server + '/api/current/lookups');
                     expect(task.options.filesRoute).to.equal(server + '/api/current/files');
